@@ -56,7 +56,7 @@ Complex::Complex(double r, double i=0): real(0),imag(0){
 	cout << "Constructor por parametros" << endl;
 #endif
 }
-Complex::Complex(double r, double i=0, Ctype type){
+Complex::Complex(double r, double i, Ctype type){
 	switch(type)
 	{
 		case Ctype::rec:
@@ -205,4 +205,48 @@ Complex Complex::operator!(void){
 
 void Complex::printComplex(void){
 	cout<< "( "<< this->real << " , " << this->imag << " ) " << endl;
+}
+
+
+//Descripcion: 	Operador de flujo <<
+//Precondicion:
+//Postcondicion:
+std::ostream & operator<< (std::ostream& os,const Complex & c)
+{
+	return os << "z = "<< c.real << "+ i "<< c.imag << std::endl;
+}
+
+
+//Descripcion: Carga desde el flujo de entrada hacia el flujo de salida
+//Precondicion: el formato debe ser (X,X) sin espacios y con numeros flotantes
+//Postcondicion:
+std::istream & operator>>(std::istream& is,Complex & c)
+{
+	Complex aux;
+	float number;
+	char ch;
+	if( (is >> ch) && (ch == '(') && (is >> number) ){
+		aux.real = number;
+	}else{
+		is.clear(ios::badbit);
+		return is;
+	}
+	if((is >> ch) && (ch == ',') && (is >> number)){
+		aux.imag = number;
+	}else{
+		is.clear(ios::badbit);
+		return is;
+	}
+	if ( (is >> ch) && ch != ')' ){
+		is.clear(ios::badbit);
+		return is;
+	}
+	double rec[2] = {aux.real,aux.angle};
+	double* pol = Complex::rec2pol(rec);
+	c.real = aux.real;
+	c.imag = aux.imag;
+	c.radius = pol[0];
+	c.angle = pol[1];
+	delete[] pol;
+	return is;
 }

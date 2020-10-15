@@ -46,6 +46,8 @@ public:
 	Complex& operator=(const Complex &other);
 
 	void printComplex(void);
+	friend std::ostream & operator<< (std::ostream& os,const Complex & c);
+	friend std::istream & operator>>(std::istream& is,Complex & c);
 };
 
 #endif /* COMPLEX_H_ */

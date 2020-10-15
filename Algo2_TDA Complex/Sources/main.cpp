@@ -55,6 +55,9 @@ int main (void)
 	cout << "z4 = "; z4.printComplex();
 	cout << "z5 = "; z5.printComplex();
     cout << "z6 = "; z6.printComplex();
+
+    cin>>z1;
+    cout << "z1 = "; z1.printComplex();
 	return EXIT_SUCCESS;
 }
 
