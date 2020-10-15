@@ -36,9 +36,26 @@ int main() {
 	Arr2.show();
 
 	cout<< Arr3 <<endl;
-	cout<<"Ingrese un arreglo de numeros separados por coma (sin espacios) comenzando por '[' y terminando con ']' " << endl;
-	Array Arr5;
-	cin >> Arr5;
-	cout<< Arr5 <<endl;
+//	cout<<"Ingrese un arreglo de numeros separados por coma (sin espacios) comenzando por '[' y terminando con ']' " << endl;
+//	Array Arr5;
+//	cin >> Arr5;
+//	cout<< Arr5 <<endl;
+
+
+	Arr3.show(showType::ascendent);
+	Arr3.show(showType::descendent);
+
+	;
+	cout<<Arr3.sum()<<endl;
+
+	Array Arr6={5,4,7,8,1,2,6,8,6,0};
+	cout<<Arr6<<endl;
+	Arr6.sort(sortType::bubble);
+	cout<<Arr6<<endl;
+	Arr6={5,4,7,8,1,2,6,8,6,0};
+	cout<<Arr6<<endl;
+	Arr6.sort(sortType::insertion);
+	cout<<Arr6<<endl;
+
 	return 0;
 }

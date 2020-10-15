@@ -148,6 +148,25 @@ int& Array::operator [](int index) const{
 	return pArray[index];
 }
 
+//Descripcion: Invoca a _sum_
+//Precondicion:
+//Postcondicion:
+int Array::sum(void)const{
+	int accum = 0 , index = 0;
+	accum = this->_sum_(index,accum);
+	return accum;
+}
+
+//Descripcion: Mediante recursividad de cola suma todos los elementos
+//Precondicion:
+//Postcondicion:
+int Array::_sum_(int index,int accum)const{
+	if(index < 0 || index > this->length)
+		return 0;
+	if( index == this->length)
+		return accum;
+	return this->_sum_(index+1,accum+this->pArray[index]);
+}
 
 //Descripcion: Muestra en pantalla el contenido del array
 //Precondicion: Si es nulo debe decir que esta vacio
@@ -165,10 +184,65 @@ void Array::show(void) const{
 
 }
 
+//Descripcion: Show con argumentos. Invoca a _show_
+//Precondicion: debe recibir 1 o menos 1
+//Postcondicion:
+void Array::show(showType type) const{
+	if(this->pArray){
+		std::cout<< "El Arreglo contiene : [" ;
+
+		switch(type){
+			case showType::ascendent:
+				this->_show_(0,type);
+			break;
+			case showType::descendent:
+				this->_show_(this->length-1,type);
+			break;
+			default:
+			break;
+		}
+		std::cout<<"]"<<std::endl;
+	}else{
+		std::cout<< "El Arreglo esta vacio "<<std::endl;
+	}
+
+}
+
+//Descripcion: Show con argumentos. Mediante recursividad muestra en orden
+//ascendente o descenden el arreglo
+//Precondicion:
+//Postcondicion:
+void Array::_show_(const int param,const showType type )const {
+
+	std::cout<<this->pArray[param];
+
+	switch(type)
+	{
+	case showType::ascendent:
+		if(param != this->length -1 )
+		{
+			std::cout<<", ";
+			this->_show_(param+1,type);
+		}
+		break;
+	case showType::descendent:
+			if(param != 0)
+			{
+				std::cout<<", ";
+				this->_show_(param-1,type);
+			}
+		break;
+	default:
+		break;
+	}
+
+}
+
+
 //Descripcion: 	Redimensiona un arreglo
 //Precondicion: El objeto debe redimensionar si es necesario. Si es menor recorta. Si es mayor paddle de ceros
 //Postcondicion:
-void Array::resize(int len){
+void Array::resize(const int len){
 	if(this->length != len){
 		int * aux = new int[len]{0};
 		int L = (len > this->length)? this->length:len;
@@ -179,6 +253,68 @@ void Array::resize(int len){
 	}
 }
 
+
+//Descripcion: 	Invoca Metodos de Ordenamiento segun type y los inicializa
+//Precondicion:
+//Postcondicion:
+void Array::sort(sortType type){
+
+	switch(type){
+	case sortType::bubble:
+			this->_bubbleSort_(0,this->length-1);
+		break;
+	case sortType::insertion:
+			this->_insertSort_(0);
+		break;
+
+	default:
+		break;
+	}
+}
+
+//Descripcion: 	Metodo de ordenamiento por burbujeo recursivo.
+//maxLen se decrementa a medida que el metodo confirma una posicion
+//index1 apunta al primero de los dos elemtnos consecutivos a comparar
+//Precondicion: index1 y maxLen se consideran bien inicializados
+//Postcondicion: arreglo ordenado
+void Array::_bubbleSort_(int index, int maxLen){
+	if( maxLen == 0)
+		return;
+	if( index == maxLen)
+		this->_bubbleSort_(0,maxLen-1);
+	else
+	{
+		if( this->pArray[index] > this->pArray[index+1])
+			this->swap(index,index+1);
+		this->_bubbleSort_(index+1,maxLen);
+	}
+}
+
+//Descripcion: 	Metodo de ordenamiento por burbujeo recursivo.
+//maxLen se decrementa a medida que el metodo confirma una posicion
+//index1 apunta al primero de los dos elemtnos consecutivos a comparar
+//Precondicion: index1 y maxLen se consideran bien inicializados
+//Postcondicion: arreglo ordenado
+void Array::_insertSort_(int index){
+	int i;
+	index++;
+	if(index == this->length){return;}
+	else{
+		for(i = 0; pArray[index]>pArray[i] ; i++ );
+		for(int j = index ; j!=i ; j--){ this->swap(j-1,j);}
+		this->_insertSort_(index);
+	}
+}
+
+//Descripcion: 	Intercambia dos elementos del arreglo
+//Precondicion: los indices deben estar validados
+//Postcondicion:
+void Array::swap(const int index1,const int index2){
+	if (index1 < 0 || index1 >= this->length || index2 < 0 || index2 >= this->length) return;
+	int aux = this->pArray[index1];
+	this->pArray[index1]=this->pArray[index2];
+	this->pArray[index2]=aux;
+}
 
 //Descripcion: 	Destructor
 //Precondicion:
