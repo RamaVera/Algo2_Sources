@@ -56,6 +56,10 @@ int main() {
 	cout<<Arr6<<endl;
 	Arr6.sort(sortType::insertion);
 	cout<<Arr6<<endl;
+	Arr6={5,4,7,8,1,2,6,8,6,0};
+	cout<<Arr6<<endl;
+	Arr6.sort(sortType::merge);
+	cout<<Arr6<<endl;
 
 	return 0;
 }

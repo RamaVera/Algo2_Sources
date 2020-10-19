@@ -27,10 +27,13 @@ private:
 	int length;
 	int * pArray;
 
+	void _swapArguments_(Array & other);
 	void _show_(const int,const showType) const;
 	int _sum_(int index,int accum) const;
 	void _bubbleSort_(int index, int maxLen);
 	void _insertSort_(int index);
+	void _mergeSort_(int first, int last);
+	void _merge_(int first,int middle, int last);
 
 public:
 	~Array();

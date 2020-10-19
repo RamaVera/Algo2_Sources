@@ -2,4 +2,6 @@
 *.o
 *.d
 *.stackdump
-.metadata
+*.metadata
+*.xml
+.settings/

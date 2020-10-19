@@ -266,6 +266,9 @@ void Array::sort(sortType type){
 	case sortType::insertion:
 			this->_insertSort_(0);
 		break;
+	case sortType::merge:
+				this->_mergeSort_(0,this->length-1);
+			break;
 
 	default:
 		break;
@@ -289,6 +292,7 @@ void Array::_bubbleSort_(int index, int maxLen){
 		this->_bubbleSort_(index+1,maxLen);
 	}
 }
+
 
 //Descripcion: 	Metodo de ordenamiento por burbujeo recursivo.
 //maxLen se decrementa a medida que el metodo confirma una posicion
@@ -316,12 +320,71 @@ void Array::swap(const int index1,const int index2){
 	this->pArray[index2]=aux;
 }
 
+//Descripcion: 	Metodo de ordenamiento mergesort recursivo.
+//Precondicion:
+//Postcondicion: arreglo ordenado
+void Array::_mergeSort_(int first, int last){
+
+	if( first < last )
+	{
+		int middle = (first+last)/2;
+		//std::cout<< first <<" "<<middle<<" "<<last<<std::endl;
+		this->_mergeSort_(first,middle);
+		this->_mergeSort_(middle+1,last);
+		this->_merge_(first,middle,last);
+	}
+
+}
+void Array::_merge_(int first,int middle, int last){
+	//static int counter=0;
+	//std::cout<<"Llamado numero "<<counter++<<" Entre: "<<first<<" y "<< last<<std::endl;
+
+	Array aux(this->length);
+	bool reachEnd1 = false, reachEnd2 = false;
+	int leftIndex = first;
+	int rightIndex = middle+1;
+	int endLeft = middle+1;
+	int endRight = last +1;
+	int auxIndex = first;
+	do{
+		if( this->pArray[leftIndex] <= this->pArray[rightIndex] ){
+			aux.pArray[auxIndex++] = this->pArray[leftIndex++];
+		}else{
+			aux.pArray[auxIndex++] = this->pArray[rightIndex++ ];
+		}
+		if(leftIndex == endLeft) 	reachEnd1 = true;
+		if(rightIndex == endRight) 	reachEnd2 = true;
+
+	}while(reachEnd1 != true && reachEnd2 != true);
+
+	if ( reachEnd1 ){
+		do{
+			aux.pArray[auxIndex++] = this->pArray[rightIndex++];
+		}while(rightIndex < last);
+	}else
+	if (reachEnd2){
+		do{
+			aux.pArray[auxIndex++] = this->pArray[leftIndex++];
+		}while(leftIndex < middle);
+	}
+
+	for(int i = first ; i < auxIndex ; i++)
+	{
+		 this->pArray[i]= aux.pArray[i];
+	}
+	//std::cout<<*(this)<<std::endl;
+	//this->_swapArguments_(aux); % Preguntar
+
+}
+
+
+
 //Descripcion: 	Destructor
 //Precondicion:
 //Postcondicion:Debe liberar la memoria y poner a cero las variables
 Array::~Array() {
 	// TODO Auto-generated destructor stub
-	std::cout<<"Destructor Called"<<std::endl;
+	//std::cout<<"Destructor Called"<<std::endl;
 	delete[] pArray;
 	pArray=NULL;
 	length=0;
@@ -354,7 +417,7 @@ std::istream & operator>>(std::istream& is,Array & arr)
 	Array * aux= new Array(10);
 	int number;
 	char ch;
-	int i;
+	int i = 0;
 	if( (is >> ch) && (ch == '[') && (is >> number) ){
 		aux->pArray[0]=number;
 		for(i=1 ;((is >> ch) && (ch == ',') && (is >> number)); i++ ){
@@ -371,4 +434,18 @@ std::istream & operator>>(std::istream& is,Array & arr)
 	arr.pArray=aux->pArray;
 	arr.length=aux->length;
 	return is;
+}
+
+
+void Array::_swapArguments_(Array & other){
+
+	Array aux(*(this));
+	this->pArray = other.pArray;
+	this->length = other.length;
+
+	other.pArray = aux.pArray;
+	other.length = aux.length;
+
+
+
 }
